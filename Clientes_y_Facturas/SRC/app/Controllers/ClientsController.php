@@ -12,10 +12,10 @@ class ClientsController extends BaseController{
     }
      
     public function index(){
-        if($this->session->get('user')=='false'){
+        if($this->session->get('user')!='admin' and $this->session->get('user')!='true'){
             header("Location: /login");
             exit;
-        }else{   
+        }else{  
             $page='Clients';
             $data['title'] = ucfirst($page);
             

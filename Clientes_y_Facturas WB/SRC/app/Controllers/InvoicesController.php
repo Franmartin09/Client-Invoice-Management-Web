@@ -24,10 +24,10 @@ class InvoicesController extends BaseController{
     }
      
     public function index(){ 
-        if($this->session->get('user')=='false'){
+        if($this->session->get('user')!='admin' and $this->session->get('user')!='true'){
             header("Location: /login");
             exit;
-        }else{    
+        }else{ 
             if(isset($_GET["id_cliente"])){
                 $idCliente = $_GET["id_cliente"];
                 $page='Facturas de Cliente con ID: ' . $idCliente;

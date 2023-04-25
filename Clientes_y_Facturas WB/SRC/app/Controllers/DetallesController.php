@@ -18,7 +18,7 @@ class DetallesController extends BaseController{
     }
      
     public function index(){
-        if($this->session->get('user')=='false'){
+        if($this->session->get('user')!='admin' and $this->session->get('user')!='true'){
             header("Location: /login");
             exit;
         }else{
@@ -127,8 +127,8 @@ class DetallesController extends BaseController{
         exit;
         
     }
-    public function editar_factura(){  //diferenciar si es crear o editar
-        if($this->session->get('user')=='false'){
+    public function editar_factura(){
+        if($this->session->get('user')!='admin' and $this->session->get('user')!='true'){
             header("Location: /login");
             exit;
         }else{
@@ -150,7 +150,7 @@ class DetallesController extends BaseController{
         }
     }
     public function añadir_item(){
-        if($this->session->get('user')=='false'){
+        if($this->session->get('user')!='admin' and $this->session->get('user')!='true'){
             header("Location: /login");
             exit;
         }else{
@@ -176,7 +176,7 @@ class DetallesController extends BaseController{
         }
     }
     public function editar_item(){
-        if($this->session->get('user')=='false'){
+        if($this->session->get('user')!='admin' and $this->session->get('user')!='true'){
             header("Location: /login");
             exit;
         }else{
