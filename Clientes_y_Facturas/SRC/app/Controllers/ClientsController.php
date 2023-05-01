@@ -16,7 +16,7 @@ class ClientsController extends BaseController{
             header("Location: /login");
             exit;
         }else{  
-            $page='Clients';
+            $page='Clientes';
             $data['title'] = ucfirst($page);
             
             $value['autocomplete']="";
