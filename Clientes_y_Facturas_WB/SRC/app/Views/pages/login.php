@@ -38,3 +38,10 @@ function checkForm(event) {
 </form>
 </div>
 
+<script>
+    <?if($error==true){?>
+    window.alert("Username password combination is wrong!");
+    // alert("Hello world!");
+<?}?>
+</script>
+

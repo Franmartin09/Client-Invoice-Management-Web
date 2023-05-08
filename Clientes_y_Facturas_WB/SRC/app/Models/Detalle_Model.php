@@ -52,6 +52,25 @@ class Detalle_Model extends Model{
         }
 
     }
+
+    public function añadir_nuevos($id_factura,$array){
+        $query=$this->db->query("DELETE FROM $this->table WHERE id_factura=$id_factura");
+        foreach ($array as $valor) {
+            if($valor->id_iteam == ""){
+                if($this->getBy('id_iteam',1)){        
+                    $query=$this->db->query("INSERT INTO $this->table(id_iteam, overview, price, quantity, id_factura) VALUES ((SELECT MAX(id_iteam)+1 FROM $this->table),'$valor->overview','$valor->price','$valor->quantity','$id_factura')");
+                }
+                else{
+                    $query=$this->db->query("INSERT INTO $this->table(id_iteam, overview, price, quantity, id_factura) VALUES (1,'$valor->overview','$valor->price','$valor->quantity','$id_factura')");
+                }
+            }
+            else{
+                $query=$this->db->query("INSERT INTO $this->table(id_iteam, overview, price, quantity, id_factura) VALUES ($valor->id_iteam,'$valor->overview','$valor->price','$valor->quantity','$id_factura')");
+            }
+        }
+        return $query;
+    }
     
 }
 ?>
+

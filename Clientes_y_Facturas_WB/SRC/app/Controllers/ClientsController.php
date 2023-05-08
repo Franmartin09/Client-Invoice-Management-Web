@@ -1,6 +1,7 @@
 <?php
 namespace App\Controllers;
 use App\Models\Client_Model;
+use DateTime;
 
 class ClientsController extends BaseController{
      
@@ -8,10 +9,16 @@ class ClientsController extends BaseController{
     private $session;
     public function __construct() {
         $this->db = new Client_Model();
+        // $date=new DateTime();
+        // var_dump("antes de: ".$date->format('H:i:sP'));
         $this->session = \Config\Services::session();
+        // $date=new DateTime();
+        // var_dump("despues de: ".$date->format('H:i:sP'));
     }
      
     public function index(){
+        // $date=new DateTime();
+        // var_dump("antes de: ".$date->format('H:i:sP'));
         if($this->session->get('user')!='admin' and $this->session->get('user')!='true'){
             header("Location: /login");
             exit;
@@ -38,10 +45,13 @@ class ClientsController extends BaseController{
                 $value['radio']="activo";
                 $value['users'] = $this->db->getAllAOrderBy('id_cliente');
             }
+            // $date=new DateTime();
+            // var_dump("antes de: ".$date->format('H:i:sP'));
             return view('templates/header', $data)
             . view('pages/clients', $value)
             . view('templates/footer');
         }
+      
     }
     public function posts(){
         if (isset($_POST['logout'])) $this->logout();

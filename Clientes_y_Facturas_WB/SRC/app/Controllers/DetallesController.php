@@ -10,6 +10,21 @@ class DetallesController extends BaseController{
     private $db_items;
     private $db_clientes;
     private $session;
+
+    // Datos de factura en un array
+    private $facturaData = [
+        'numero_factura',
+        'fecha_factura',
+        'id_factura',
+        'fecha',
+        'reference', 
+        'importe_neto ',
+        'iva',
+        'importe_total', 
+        'numero_factura ',
+        'id_cliente',
+    ];
+    private $itemsDatas = [];
     public function __construct() {
         $this->db = new Invoice_Model();
         $this->db_clientes = new Client_Model();
@@ -63,15 +78,19 @@ class DetallesController extends BaseController{
             header("Location: /home");
         }
         else if(isset($_POST["guardar_factura"])){
-            if($this->db_items->getBy('id_factura',$_GET["id_factura"])==NULL) $this->db->deleteBy('id_factura',$_GET["id_factura"]);
-            else $this->db->updateimporte($_GET["id_factura"], $this->db_items->importe_neto_total($_GET["id_factura"]));
+            if($_POST["guardar_factura"]!="[]"){
+                $arr=json_decode($_POST["guardar_factura"]);
+                $this->db_items->añadir_nuevos($_GET["id_factura"],array_reverse($arr));
+                $this->db->updateimporte($_GET["id_factura"], $this->db_items->importe_neto_total($_GET["id_factura"]));
+            }
+            else $this->db->deleteBy('id_factura',$_GET["id_factura"]);
 
             if(isset($_GET["id_cliente"])) header("Location: /facturas?id_cliente=".$_GET["id_cliente"]);
             else header("Location: /facturas");
         }
         else if(isset($_POST["cancelar_factura"])){
             if($this->db_items->getBy('id_factura',$_GET["id_factura"])==NULL) $this->db->deleteBy('id_factura',$_GET["id_factura"]);
-            else $this->db->updateimporte($_GET["id_factura"], $this->db_items->importe_neto_total($_GET["id_factura"]));
+
             if(isset($_GET["id_cliente"])) header("Location: /facturas?id_cliente=".$_GET["id_cliente"]);
             else header("Location: /facturas");
         }
@@ -79,46 +98,6 @@ class DetallesController extends BaseController{
             $this->db->deleteBy( 'id_iteam',$_POST["eliminar_item"]);
             if(isset($_GET["id_cliente"])) header("Location: /añadir_item?id_factura=".$_GET["id_factura"]."&id_cliente=".$_GET["id_cliente"]);
             else header("Location: /añadir_item?id_factura=".$_GET["id_factura"]);
-        }
-        else if(isset($_POST["editar_item"])){
-            header("Location: /editar_item?id_factura=".$_GET["id_factura"]."&id_item=".$_POST["editar_item"]);
-        }
-        else if(isset($_POST["edited_item"])){
-            $datos=$this->db->getByRow('id_factura',$_GET["id_factura"]);
-            if(isset($_POST["edited_item"])){
-                if(isset($_POST["cantidad"])) $cantidad=$_POST["cantidad"];
-                else $cantidad="1";
-                $this->db_items->edit_item($_POST["edited_item"],$_POST['precio'], $_POST["descripcion"], $cantidad); 
-            }
-            if(isset($datos->id_cliente)){
-                if($_SESSION['editar']=='false')header("Location: /crear_facturas?id_factura=".$_GET["id_factura"]."&id_cliente=$datos->id_cliente");
-                else header("Location: /editar_facturas?id_factura=".$_GET["id_factura"]."&id_cliente=$datos->id_cliente");
-            }else{
-                if($_SESSION['editar']=='false')header("Location: /crear_facturas?id_factura=".$_GET["id_factura"]);
-                else header("Location: /editar_facturas?id_factura=".$_GET["id_factura"]);
-            }
-        }
-        else if(isset($_POST["añadir_item"])){
-            if(isset($_GET["id_cliente"])) header("Location: /añadir_item?id_factura=".$_GET["id_factura"]."&id_cliente=".$_GET["id_cliente"]);
-            else header("Location: /crear_facturas?id_factura=".$_GET["id_factura"]);
-        }
-        else if(isset($_POST["item_added"])){
-            if($_POST["descripcion"]!=""){
-                if($_POST["cantidad"]!="") $cantidad=$_POST["cantidad"];
-                else $cantidad="1";
-                if($this->db_items->commprovar_item($_GET["id_factura"],$_POST["descripcion"],$cantidad,$_POST["precio"])==false) $this->db_items->add_iteam($_GET["id_factura"],$_POST["descripcion"],$_POST["precio"],$cantidad);
-            }
-            if(isset($_GET["id_cliente"])) header("Location:  /añadir_item?id_factura=".$_GET["id_factura"]."&id_cliente=".$_GET["id_cliente"]);
-            else header("Location:  /añadir_item?id_factura=".$_GET["id_factura"]);
-        }
-        else if(isset($_POST["item_cancel"])){
-            if(isset($_GET["id_cliente"])){
-                if($_SESSION['editar']=='false')header("Location: /crear_facturas?id_factura=".$_GET["id_factura"]."&id_cliente=".$_GET["id_cliente"]);
-                else header("Location: /editar_facturas?id_factura=".$_GET["id_factura"]."&id_cliente=".$_GET["id_cliente"]);
-            }else{
-                 if($_SESSION['editar']=='false')header("Location: /crear_facturas?id_factura=".$_GET["id_factura"]);
-                 else header("Location: /editar_facturas?id_factura=".$_GET["id_factura"]);
-            }
         }
         else if(isset($_POST["comprobar_cliente"])){
             if(isset($_POST["cliente"]) and $_POST["cliente"]!=""){
@@ -152,6 +131,7 @@ class DetallesController extends BaseController{
             $value['añadir']="";
             $value['autocomplete'] ="";
             $_SESSION['editar'] = 'true';
+            // var_dump(json_encode($value['detalle']));
             return view('templates/header', $data)
             . view('pages/make_invoice', $value)
             . view('templates/footer');
