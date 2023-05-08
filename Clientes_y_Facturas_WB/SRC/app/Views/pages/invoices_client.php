@@ -2,14 +2,14 @@
         <img src="app/Views/templates/loading.gif" alt="Loading..." style="width:300px;margin-top:25vh;"> 
 </div>
 
-<div class="mb-1 mt-0 text-end w-90" style="margin-right:5%;margin-left:5%;">
+<div class="mb-1 mt-5 text-end w-90" style="margin-right:5%;margin-left:5%;">
     <form method="post" action="" >
             <button class="btn btn-secondary" type="submit" onclick=showLoading() name="crear" style="height:40px;width:100px" ><i class="bi bi-plus-lg"></i></button>
     </form>
 </div>
 
-<div class="mx-auto" style="width:90%; overflow-y: auto; max-height: 620px;">
-    <table class="table table-condensed table-striped table-hover text-center" >
+<div class="mx-auto" style="width:90%; overflow-y: auto; max-height: 643px;">
+    <table class="table table-condensed table-striped table-hover text-center " >
         <thead style="background-color:#712cf9; color:white;">
             <tr>
                 <th>ID Factura</th>

@@ -108,7 +108,7 @@ class ClientsController extends BaseController{
         $value['users']="";
         if(filter_var($input, FILTER_VALIDATE_EMAIL))$value['users'] = $this->db->getByLike('email_cliente',$input);
         else if(preg_match('/^[0-9]{1,8}$/', $input)) $value['users'] = $this->db->getBy('id_cliente',$input);
-        else if(preg_match('/^[0-9]{9}$/', $input)) $value['users'] = $this->db->getByLike('CAST(phone AS TEXT)',$input);
+        else if(preg_match('/^[0-9]{9}$/', $input)) $value['users'] = $this->db->getByLike('CAST(cif AS TEXT)',$input);
         else if(preg_match('/^[a-zA-Z ]+$/', $input)) $value['users'] = $this->db->getByLike('name_surname',$input);
         else if(preg_match('/^\d{4}-\d{2}-\d{2}$/', $input)) {
           $fecha = date('Y-m-d H:i:s', strtotime($input));
