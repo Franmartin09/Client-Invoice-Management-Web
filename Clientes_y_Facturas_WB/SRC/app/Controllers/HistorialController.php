@@ -9,16 +9,15 @@ class HistorialController extends BaseController{
 
     private $session;
     public function __construct() {
-        $this->db = new Invoice_Model();
         $this->session = \Config\Services::session();      
     }
      
     public function index(){
         if($this->session->get('user')!='admin' and $this->session->get('user')!='true'){
-            header("Location: /login");
-            exit;
-        }else{   
-            $page='Historial';
+            return header("Location: /login");
+        }else{
+            $this->db = new Invoice_Model();
+            $page='History';
             $data['title'] = ucfirst($page);
             if(empty($_GET["fecha"])){
                 $value['week']=date('Y')."-W".date('W');
@@ -39,14 +38,18 @@ class HistorialController extends BaseController{
     }
     public function posts(){
         if (isset($_POST['logout'])) $this->logout();
-        else if(isset($_POST["week"])) header("Location: /historial?fecha=".date('Y-m-d', strtotime($_POST["week"])));
-        else if(isset($_POST["volver"])) header("Location: /home");
-        exit;
+        else if(isset($_POST["week"])){
+            $value1 = date('Y-m-d', strtotime($_POST["week"]));
+            $value2 = date('Y-m-d',strtotime("2020-01-01"));
+            $value3 = date('Y-m-d',strtotime("2040-01-01"));
+            if($value1>$value2 && $value1<$value3) return header("Location: /historial?fecha=".date('Y-m-d', strtotime($_POST["week"])));
+            else return header("Location: /historial");
+        }
+        else if(isset($_POST["volver"])) return header("Location: /home");
     }
     public function logout(){
         $this->session->destroy();
-        header("Location: /login");
-        exit;
+        return header("Location: /login");
     }
    
 

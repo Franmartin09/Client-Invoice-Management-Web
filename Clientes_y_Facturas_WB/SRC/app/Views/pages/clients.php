@@ -4,21 +4,21 @@
         <div class="col-lg-3 offset-lg-1">
             <div class="text-center" style="height:40px; width:fit-content;">
                 <input class="form-check-input me-2 ms-2.5" type="radio" name="radio" value="activo" <?php if (isset($radio) && $radio=="activo") echo "checked";?>/>
-                <span>Clientes Activos</span>
+                <span>Active Clients</span>
             </div>
             <div class="text-center mb-2" style="height:40px; width:fit-content;">
                 <input class="form-check-input mt-2 me-2 ms-2.5" type="radio" name="radio" value="inactivo" <?php if (isset($radio) && $radio=="inactivo") echo "checked";?>/>
-                <span>Clientes Inactivos</span>
+                <span>Inactive Clients</span>
                 <button class="btn btn-outline-warning" type="submit"  onclick=showLoading() style="margin-left:20px"><i class="bi bi-funnel"></i></button>
             </div>
             <div class="text-center" style="height:40px; width:fit-content;">
                 <input class="form-check-input mt-2 me-2" type="radio" name="radio" value="total" <?php if (isset($radio) && $radio=="total") echo "checked";?>/>
-                <span class="mt-3">Todos los Clientes</span>
+                <span class="mt-3">All Clients</span>
             </div>
         </div>
         <div class="col-lg-4 text-center">
             <div class="input-group">           
-                <input class="form-control border-0 border-bottom"  type="text" name="pattern" placeholder="Nombre,Email,...">
+                <input maxlength="50" class="form-control border-0 border-bottom"  type="text" name="pattern" placeholder="Name, Email, ...">
                 <span class="input-group-addon border-bottom text-center" style="font-size:20px;"><button class="border-0 bg-white" type="submit" onclick=showLoading() name="buscar"><i class="bi bi-search"></i></button></span><br>
             </div>
         </div>
@@ -31,22 +31,22 @@
 </div>
 
 
-<div class="mx-auto" style="width:90%; max-height: 600px; overflow-y: scroll;">
+<div class="mx-auto" style="width:90%; max-height: 600px; overflow: auto; margin-bottom:70px;">
     <table class="table table-condensed table-striped table-hover text-center" >
         <thead style="background-color:#712cf9; color:white;">
             <tr id="header">
-                <th >ID</th>
-                <th >Name</th>
-                <th >Email</th>
-                <th >Phone</th>
-                <th >Direccio</th>
-                <th >CIF</th>
-                <th >Fecha de Alta</th>
-                <th >Fecha de Baja</th>
-                <th >Options</th>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Address</th>
+                <th>CIF</th>
+                <th>Date of Enrollment</th>
+                <th>Date of Cancellation</th>
+                <th>Options</th>
             </tr>
         </thead>
-        <tbody >
+        <tbody>
             <?
             if($añadir!=""){
             ?>
@@ -55,11 +55,11 @@
                 <div class="text-center">
                     <form method="post" action="" id="addclient_id"  name="signup-form">
                         <td></td>
-                        <td><input type="text" name="nombre"></td>
-                        <td><input type="text" name="email"></td>
-                        <td><input style="max-width:90px;" type="text" name="phone"> </td>
-                        <td><input type="text" name="direccion"></td>
-                        <td><input style="max-width:90px;" type="text" name="cif"> </td>
+                        <td><input type="text" name="nombre" maxlength="20"></td>
+                        <td><input type="text" name="email" maxlength="30"></td>
+                        <td><input style="max-width:90px;" type="text" name="phone" maxlength="12"></td>
+                        <td><input type="text" name="direccion" maxlength="30"></td>
+                        <td><input style="max-width:90px;" type="text" name="cif" maxlength="9"> </td>
                         <td><span><? echo date("Y-m-d H:i:s");?></span></td>
                         <td></td>
                         <td>
@@ -105,11 +105,11 @@
                         <div class="text-center">
                             <form method="post" action="">
                                 <td><span ><?php echo $autocomplete[0]->id_cliente;?></span></td>
-                                <td><input type="text" name="nombre" value='<?php echo $autocomplete[0]->name_surname;?>'></td>
-                                <td><input type="text" name="email" value='<?php echo $autocomplete[0]->email_cliente;?>'></td>
-                                <td><input style="max-width:90px;" type="text" name="phone" value='<?php echo $autocomplete[0]->phone;?>'></td>
-                                <td><input type="text" name="direccion" value='<?php echo $autocomplete[0]->addres;?>'></td>
-                                <td><input style="max-width:90px;" type="text"  name="cif" value='<?php echo $autocomplete[0]->cif;?>'></td>
+                                <td><input maxlength="20" type="text" name="nombre" value='<?php echo $autocomplete[0]->name_surname;?>'></td>
+                                <td><input maxlength="30" type="text" name="email" value='<?php echo $autocomplete[0]->email_cliente;?>'></td>
+                                <td><input maxlength="12" style="max-width:90px;" type="text" name="phone" value='<?php echo $autocomplete[0]->phone;?>'></td>
+                                <td><input maxlength="30" type="text" name="direccion" value='<?php echo $autocomplete[0]->addres;?>'></td>
+                                <td><input maxlength="9" style="max-width:90px;" type="text"  name="cif" value='<?php echo $autocomplete[0]->cif;?>'></td>
                                 <td><span ><?php echo $autocomplete[0]->fecha_alta;?></span></td>
                                 <td><span ><?php echo $autocomplete[0]->fecha_baja;?></span></td>
                                 <td>

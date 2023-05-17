@@ -8,18 +8,18 @@
     </form>
 </div>
 
-<div class="mx-auto" style="width:90%; overflow-y: auto; max-height: 643px;">
+<div class="mx-auto" style="width:90%; overflow: auto; max-height: 643px;">
     <table class="table table-condensed table-striped table-hover text-center " >
         <thead style="background-color:#712cf9; color:white;">
             <tr>
-                <th>ID Factura</th>
-                <th>Referencia</th>
-                <th>Nº Factura</th>
-                <th>Fecha</th>
-                <th>Importe Neto</th>
+                <th>ID Invoice</th>
+                <th>Reference</th>
+                <th>Nº Invoice</th>
+                <th>Date</th>
+                <th>Net Amount</th>
                 <th>IVA (%)</th>
-                <th>Importe Total</th>
-                <th>Opciones</th>
+                <th>Total Amount</th>
+                <th>Options</th>
             </tr>
         </thead>
         <tbody>

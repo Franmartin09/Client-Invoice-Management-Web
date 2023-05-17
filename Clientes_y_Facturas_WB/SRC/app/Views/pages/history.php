@@ -1,3 +1,11 @@
+<script>
+function checkForm(event) {
+  const date = document.querySelector('input[name="week"]');
+  if (date.value) {
+    showLoading();
+  }
+}
+</script>
 <div id="loading" style="text-align:center; position:fixed; width:100%; height:100%;top:0; bottom:0; background-color: rgba(255,255,255,0.85); z-index:9999; display:none;">
         <img src="app/Views/templates/loading.gif" alt="Loading..." style="width:300px;margin-top:25vh;"> 
 </div>
@@ -6,8 +14,8 @@
     <div class="row">
         <div class="col-lg-12">
             <div class="input-group justify-content-center">           
-                <input class="form-control border-0 border-bottom" style="max-width:263px;" type="week" name="week" value="<?echo $week?>" min="2020-W1" max="2024-W1">
-                <span class="input-group-addon border-bottom text-center" style="font-size:20px;"><button class="border-0 bg-white" type="submit" onclick=showLoading()><i class="bi bi-search"></i></button></span>
+                <input class="form-control border-0 border-bottom" style="max-width:263px;" type="week" name="week" value="<?echo $week?>" min="2020-W1" max="2040-W1">
+                <span class="input-group-addon border-bottom text-center" style="font-size:20px;"><button class="border-0 bg-white" type="submit" onclick="checkForm(event)"><i class="bi bi-search"></i></button></span>
             </div>
         </div>
     </div>
@@ -15,13 +23,13 @@
 <div class="mx-auto" style="width:90%;">
     <div class="row" style="max-width:100%;">
         <div class="col-xl-4 py-1">
-            <div class="title">Grafico de Ventas Semanal</div>
+            <div class="title">Sales Chart by Week</div>
             <div class="card mb-5">
                 <div class="card-body">
                     <canvas id="chBarsemanal"></canvas>
                 </div>
             </div>
-            <div class="title">Grafico de Ventas Anual</div>
+            <div class="title">Sales Chart by Year</div>
             <div class="card">
                 <div class="card-body">
                     <canvas id="chBaranual"></canvas>
@@ -29,7 +37,7 @@
             </div>
         </div>
         <div class="col-xl-7 offset-xl-1 py-1 mb-5">
-            <div class="title">Grafico de Ventas Mensual</div>
+            <div class="title">Sales Chart by Month</div>
             <div class="card">
                 <div class="card-body">
                     <canvas id="chBarmensual"></canvas>
@@ -91,7 +99,7 @@ if(isset($anual)){
     new Chart(chBarsemanal, {
     type: 'bar',
     data: {
-        labels: ["Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado", "Domingo"],
+        labels: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
         datasets: [{
         data: <?echo $js_semana;?>,
         backgroundColor: colors[0],
@@ -140,7 +148,7 @@ if(isset($anual)){
     new Chart(chBaranual, {
     type: 'bar',
     data: {
-        labels: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Setiembre", "Octubre", "Noviembre", "Diciembre"],
+        labels: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
         datasets: [{
         data: <?echo $js_año;?>,
         backgroundColor: colors[0],

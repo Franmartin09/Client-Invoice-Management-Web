@@ -25,8 +25,18 @@
       }
     </script>
 <style>
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+               -webkit-appearance: none;
+                margin: 0;
+        }
+ 
+        input[type=number] {
+            -moz-appearance: textfield;
+        }
         .input-group-addon {
-            font-size: 25px;
+            font-size: 25px
+            
         }
         .center-block {
             display: table;
@@ -109,24 +119,34 @@
 <body class="w-100">
     <!-- IMAGEN LOADING LOGO STP -->
     <div class="loading-style" id="loading">
-            <img src="app/Views/templates/loading.gif" alt="Loading..." style="width:300px;margin-top:25vh;"> 
+        <img src="app/Views/templates/loading.gif" alt="Loading..." style="width:300px;margin-top:25vh;">
     </div> 
-    <div class="row">
-        <div class="col-md-4 mt-5 offset-md-4 text-center">
-            <h1><?= esc($title) ?></h1>
-        </div>
-                    
-        <?if ($title!='Login'){?>
-            <div class="col-md-4 mt-4 text-end">
+    <?if ($title!='Login'){?>
+
+        <div class="row">                    
+            <div class="col-md-12 mt-4 text-end">
                 <form method="post" action="">
-                    <? if($title!='Home' and ((strstr($title,' ', true))!="Crear" and (strstr($title,' ', true))!="Editar")){?>
-                        <button class="btn btn-outline-secondary me-2" style="font-size:30px;" name="volver"  onclick=showLoading()><i class="bi bi-arrow-90deg-left"></i></button>
-                    <?}if((strstr($title,' ', true))=="Crear" or (strstr($title,' ', true))=="Editar" or (strstr($title,' de', true))=="Facturas"){?>
-                        <button class="btn btn-outline-secondary me-2" style="font-size:30px;" name="home"  onclick=showLoading()><i class="bi bi-house"></i></button>
+                    <? if($title!='Home' and ((strstr($title,' ', true))!="Create" and (strstr($title,' ', true))!="Edit")){?>
+                        <button class="btn btn-outline-secondary me-2" style="width:50px;" name="volver"  onclick=showLoading()><i class="bi bi-arrow-90deg-left"></i></button>
+                    <?}if((strstr($title,' ', true))=="Create" or (strstr($title,' ', true))=="Edit" or (strstr($title,' ', true))=="Invoices"){?>
+                        <button class="btn btn-outline-secondary me-2" style=" width:50px;" name="home"  onclick=showLoading()><i class="bi bi-house"></i></button>
                     <?}?>
-                    <button class="btn btn-outline-danger me-2.5" style="font-size:30px;"  name="logout" onclick=showLoading()><i class="bi bi-box-arrow-right"></i></button>
+                    <button class="btn btn-outline-danger me-2.5" style="width:100px;"  name="logout" onclick=showLoading()>Log Out</button>
                 </form>
             </div>
-        <?}?>
-    </div>
+
+        </div>
+        <div class="row">   
+            <div class="col-md-4 mt-0 offset-md-4 text-center">
+                <h1><?= esc($title) ?></h1>
+            </div>
+        </div>
+    <?}else{?>
+        <div class="row">   
+            <div class="col-md-4 offset-md-4 text-center" style="margin-top: 62px;">
+                <h1><?= esc($title) ?></h1>
+            </div>
+        </div>
+    <?}?>
+
 

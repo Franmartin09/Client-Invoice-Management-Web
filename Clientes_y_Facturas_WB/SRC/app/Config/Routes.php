@@ -62,12 +62,7 @@ $routes->post('crear_facturas', [DetallesController::class, 'posts']);
 //Facturas Editar
 $routes->get('editar_facturas', [DetallesController::class, 'editar_factura']);
 $routes->post('editar_facturas', [DetallesController::class, 'posts']);
-//Facturas Crear Item
-$routes->get('añadir_item', [DetallesController::class, 'añadir_item']);
-$routes->post('añadir_item', [DetallesController::class, 'posts']);
-//Facturas Editar Item
-$routes->get('editar_item', [DetallesController::class, 'editar_item']);
-$routes->post('editar_item', [DetallesController::class, 'posts']);
+
 
 //HISTORIAL
 use App\Controllers\HistorialController;

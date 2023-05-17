@@ -9,21 +9,14 @@ class ClientsController extends BaseController{
     private $session;
     public function __construct() {
         $this->db = new Client_Model();
-        // $date=new DateTime();
-        // var_dump("antes de: ".$date->format('H:i:sP'));
         $this->session = \Config\Services::session();
-        // $date=new DateTime();
-        // var_dump("despues de: ".$date->format('H:i:sP'));
     }
      
     public function index(){
-        // $date=new DateTime();
-        // var_dump("antes de: ".$date->format('H:i:sP'));
         if($this->session->get('user')!='admin' and $this->session->get('user')!='true'){
-            header("Location: /login");
-            exit;
+            return header("Location: /login");
         }else{  
-            $page='Clientes';
+            $page='Clients';
             $data['title'] = ucfirst($page);
             
             $value['autocomplete']="";
@@ -45,8 +38,6 @@ class ClientsController extends BaseController{
                 $value['radio']="activo";
                 $value['users'] = $this->db->getAllAOrderBy('id_cliente');
             }
-            // $date=new DateTime();
-            // var_dump("antes de: ".$date->format('H:i:sP'));
             return view('templates/header', $data)
             . view('pages/clients', $value)
             . view('templates/footer');
@@ -54,52 +45,53 @@ class ClientsController extends BaseController{
       
     }
     public function posts(){
+        // return redirect()->route("");
         if (isset($_POST['logout'])) $this->logout();
         else if(isset($_POST["crear"])){
-            if(isset($_GET["radio"])) header("Location: /clients?añadir=true&radio=" . $_GET['radio']);
-            else header("Location: /clients?añadir=true");
+            if(isset($_GET["radio"])) return header("Location: /clients?añadir=true&radio=" . $_GET['radio']);
+            else return header("Location: /clients?añadir=true");
         }
         else if(isset($_POST["created"])){
-            $this->db->create_client($_POST['nombre'], $_POST['email'], $_POST['phone'], $_POST['direccion'], $_POST['cif']);
-            if(isset($_GET["radio"])) header("Location: /clients?radio=" . $_GET['radio']);
-            else header("Location: /clients");
+            if($_POST["nombre"]!="" && $_POST["email"]!="" && $_POST["phone"]!="" && $_POST["direccion"]!="" && $_POST["cif"]!="") $this->db->create_client($_POST['nombre'], $_POST['email'], $_POST['phone'], $_POST['direccion'], $_POST['cif']);
+            if(isset($_GET["radio"])) return header("Location: /clients?radio=" . $_GET['radio']);
+            else return header("Location: /clients");
         }
         else if(isset($_POST["archivar"])){
             $this->db->archivar_client($_POST["archivar"]);
-            if(isset($_GET["radio"])) header("Location: /clients?radio=" . $_GET['radio']);
-            else header("Location: /clients");
+            if(isset($_GET["radio"])) return header("Location: /clients?radio=" . $_GET['radio']);
+            else return header("Location: /clients");
         }
         else if(isset($_POST["desarchivar"])){
             $this->db->archivar_client($_POST["desarchivar"]);
-            if(isset($_GET["radio"])) header("Location: /clients?radio=" . $_GET['radio']);
-            else header("Location: /clients");
+            if(isset($_GET["radio"])) return header("Location: /clients?radio=" . $_GET['radio']);
+            else return header("Location: /clients");
         }
         else if(isset($_POST["eliminar"])){
             $this->db->deleteBy('id_cliente',$_POST["eliminar"]);
-            if(isset($_GET["radio"])) header("Location: /clients?radio=" . $_GET['radio']);
-            else header("Location: /clients");
+            if(isset($_GET["radio"])) return header("Location: /clients?radio=" . $_GET['radio']);
+            else return header("Location: /clients");
         }
-        else if(isset($_POST["facturas"])) header("Location: /facturas?id_cliente=".$_POST["facturas"]);
+        else if(isset($_POST["facturas"])) return header("Location: /facturas?id_cliente=".$_POST["facturas"]);
         else if(isset($_POST["editar"])){
-            if(isset($_GET["search"])) header("Location: /clients?id_cliente=".$_POST["editar"]."&search=".$_GET["search"]);
-            else if(isset($_GET["radio"])) header("Location: /clients?id_cliente=".$_POST["editar"]."&radio=".$_GET['radio']);
-            else header("Location: /clients?id_cliente=".$_POST["editar"]);
+            if(isset($_GET["search"])) return header("Location: /clients?id_cliente=".$_POST["editar"]."&search=".$_GET["search"]);
+            else if(isset($_GET["radio"])) return header("Location: /clients?id_cliente=".$_POST["editar"]."&radio=".$_GET['radio']);
+            else return header("Location: /clients?id_cliente=".$_POST["editar"]);
         }
         else if(isset($_POST["edited"])){
-            if(isset($_POST["nombre"])) $this->db->edit_client($_POST['edited'],$_POST['nombre'], $_POST['email'], $_POST['phone'], $_POST['direccion'], $_POST['cif']);
-            if(isset($_GET["search"])) header("Location: /clients?search=".$_GET["search"]);
-            else if(isset($_GET["radio"])) header("Location: /clients?radio=".$_GET['radio']);
-            else header("Location: /clients");
+            if($_POST["nombre"]!="" && $_POST["email"]!="" && $_POST["phone"]!="" && $_POST["direccion"]!="" && $_POST["cif"]!="") $this->db->edit_client($_POST['edited'],$_POST['nombre'], $_POST['email'], $_POST['phone'], $_POST['direccion'], $_POST['cif']);
+            if(isset($_GET["search"])) return header("Location: /clients?search=".$_GET["search"]);
+            else if(isset($_GET["radio"])) return header("Location: /clients?radio=".$_GET['radio']);
+            else return header("Location: /clients");
         }
         else if(isset($_POST["edited_cancel"])){
-            if(isset($_GET["search"])) header("Location: /clients?search=".$_GET["search"]);
-            else if(isset($_GET["radio"])) header("Location: /clients?radio=".$_GET['radio']);
-            else header("Location: /clients");
+            if(isset($_GET["search"])) return header("Location: /clients?search=".$_GET["search"]);
+            else if(isset($_GET["radio"])) return header("Location: /clients?radio=".$_GET['radio']);
+            else  return header("Location: /clients");
         }
-        else if(isset($_POST["buscar"])) header("Location: /clients?search=".$_POST["pattern"]);
-        else if(isset($_POST["volver"])) header("Location: /home");
-        else if(isset($_POST["radio"])) header("Location: /clients?radio=".$_POST['radio']);
-        else if(isset($_GET["radio"])) header("Location: /clients?radio=".$_GET['radio']);
+        else if(isset($_POST["buscar"])) return header("Location: /clients?search=".$_POST["pattern"]);
+        else if(isset($_POST["volver"])) return header("Location: /home");
+        else if(isset($_POST["radio"])) return header("Location: /clients?radio=".$_POST['radio']);
+        else if(isset($_GET["radio"])) return header("Location: /clients?radio=".$_GET['radio']);
         exit;
 
     }
@@ -118,8 +110,7 @@ class ClientsController extends BaseController{
     }
     public function logout(){
         $this->session->destroy();
-        header("Location: /login");
-        exit;
+        return header("Location: /login");
     }
 }
 ?>

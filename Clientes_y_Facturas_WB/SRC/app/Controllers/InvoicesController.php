@@ -7,7 +7,7 @@ use App\Models\Detalle_Model;
 
 use Dompdf\Dompdf;
 use Dompdf\Options;
-require 'vendor/autoload.php';
+require 'dompdf/autoload.inc.php';
 
 
 class InvoicesController extends BaseController{
@@ -26,16 +26,15 @@ class InvoicesController extends BaseController{
      
     public function index(){ 
         if($this->session->get('user')!='admin' and $this->session->get('user')!='true'){
-            header("Location: /login");
-            exit;
+            return redirect()->route("login");
         }else{ 
             if(isset($_GET["id_cliente"])){
                 $idCliente = $_GET["id_cliente"];
-                $page='Facturas de Cliente con ID: ' . $idCliente;
+                $page='Invoices of Client with ID: ' . $idCliente;
                 $value['invo'] = $this->db->getBy('id_cliente',$idCliente);
             }
             else{
-                $page='Todas las Facturas';
+                $page='All Invoices';
                 $value['invo'] = $this->db->getAllOrderBy('id_factura');
             }
             $data['title'] = ucfirst($page);
@@ -46,26 +45,26 @@ class InvoicesController extends BaseController{
     }
     public function posts(){
         if (isset($_POST['logout'])) $this->logout();
-        else if(isset($_POST["home"])) header("Location: /home");
+        else if(isset($_POST["home"])) return header("Location: /home");
         else if(isset($_POST["crear"])){
             if($this->db->getByRow("id_factura",1)==NULL) $idfactura = 1;
             else $idfactura = intval($this->db->getMaxByinRow('id_factura')->id_factura)+1; 
 
-            if(isset($_GET["id_cliente"])) header("Location: /crear_facturas?&id_factura=$idfactura&id_cliente=".$_GET["id_cliente"]);
-            else header("Location: /crear_facturas?&id_factura=$idfactura");
+            if(isset($_GET["id_cliente"])) return header("Location: /crear_facturas?&id_factura=$idfactura&id_cliente=".$_GET["id_cliente"]);
+            else return header("Location: /crear_facturas?&id_factura=$idfactura");
         }
         else if(isset($_POST["eliminar"])){
             $this->db->deleteBy('id_factura',$_POST["eliminar"]);
-            if(isset($_GET["id_cliente"])) header("Location: /facturas?id_cliente=".$_GET["id_cliente"]);
-            else header("Location: /facturas");
+            if(isset($_GET["id_cliente"])) return header("Location: /facturas?id_cliente=".$_GET["id_cliente"]);
+            else return header("Location: /facturas");
         }
         else if(isset($_POST["editar"])){
-            if(isset($_GET["id_cliente"])) header("Location: /editar_facturas?id_factura=".$_POST["editar"]."&id_cliente=".$_GET["id_cliente"]);
-            else header("Location: /editar_facturas?id_factura=".$_POST["editar"]);
+            if(isset($_GET["id_cliente"])) return header("Location: /editar_facturas?id_factura=".$_POST["editar"]."&id_cliente=".$_GET["id_cliente"]);
+            else return header("Location: /editar_facturas?id_factura=".$_POST["editar"]);
         }
         else if(isset($_POST["volver"])){
-            if (isset($_GET["id_cliente"])) header("Location: /clients");
-            else header("Location: /home");
+            if (isset($_GET["id_cliente"])) return header("Location: /clients");
+            else return header("Location: /home");
         }
         else if(isset($_POST["imprimir"])){
             $value['factura'] = $this->db->getByRow('id_factura', $_POST["imprimir"]);
@@ -89,13 +88,12 @@ class InvoicesController extends BaseController{
             $dompdf->render();
             $dompdf->stream("factura_" . $value['factura']->reference . ".pdf");
             // $dompdf->stream('document.pdf', array('Attachment' => 0));
+            return null;
         }
-        exit;
     }
     public function logout(){
         $this->session->destroy();
-        header("Location: /login");
-        exit;
+        return header("Location: /login");
     }
 
 }

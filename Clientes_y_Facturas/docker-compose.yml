@@ -1,5 +1,5 @@
 version: '3.7'
-name: PRO1
+name: clientes_y_facturas
 services:
     pro1webng:
         container_name: pro1-ng-web

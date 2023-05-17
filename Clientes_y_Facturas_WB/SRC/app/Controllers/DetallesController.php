@@ -34,13 +34,12 @@ class DetallesController extends BaseController{
      
     public function index(){
         if($this->session->get('user')!='admin' and $this->session->get('user')!='true'){
-            header("Location: /login");
-            exit;
+            return header("Location: /login");
         }else{
             $value['id_cliente'] = "";
             $value['n_factura'] = "";
             $value['reference'] = "";
-            $page='Crear Factura';  
+            $page='Create Invoice';  
             if($this->db->getByRow("id_factura",$_GET["id_factura"])==NULL){
                 if(isset($_GET["id_cliente"])){
                     $this->db->create_invoice($_GET["id_cliente"], $_GET["id_factura"]);
@@ -48,7 +47,7 @@ class DetallesController extends BaseController{
                     $value['id_cliente'] = $datos->id_cliente;
                     $value['reference'] = $datos->reference;
                     $value['n_factura'] = $datos->numero_factura;
-                    $page="Crear Factura para Cliente";
+                    $page="Create Invoice to Client";
                 }
             }
             else{
@@ -56,7 +55,7 @@ class DetallesController extends BaseController{
                 $value['reference']=$datos->reference;
                 $value['n_factura'] =$datos->numero_factura;
                 $value['id_cliente'] = $datos->id_cliente;
-                $page="Crear Factura para Cliente";
+                $page="Create Invoice to Client";
             }
             $data['title'] = ucfirst($page);
             $value['detalle']=$this->db_items->getBy('id_factura',$_GET["id_factura"]);
@@ -75,7 +74,7 @@ class DetallesController extends BaseController{
         else if(isset($_POST["home"])){
             if($this->db_items->getBy('id_factura',$_GET["id_factura"])==NULL) $this->db->deleteBy('id_factura',$_GET["id_factura"]);
             else $this->db->updateimporte($_GET["id_factura"], $this->db_items->importe_neto_total($_GET["id_factura"]));
-            header("Location: /home");
+            return header("Location: /home");
         }
         else if(isset($_POST["guardar_factura"])){
             if($_POST["guardar_factura"]!="[]"){
@@ -85,45 +84,46 @@ class DetallesController extends BaseController{
             }
             else $this->db->deleteBy('id_factura',$_GET["id_factura"]);
 
-            if(isset($_GET["id_cliente"])) header("Location: /facturas?id_cliente=".$_GET["id_cliente"]);
-            else header("Location: /facturas");
+            if(isset($_GET["id_cliente"])) return header("Location: /facturas?id_cliente=".$_GET["id_cliente"]);
+            else return header("Location: /facturas");
         }
         else if(isset($_POST["cancelar_factura"])){
             if($this->db_items->getBy('id_factura',$_GET["id_factura"])==NULL) $this->db->deleteBy('id_factura',$_GET["id_factura"]);
 
-            if(isset($_GET["id_cliente"])) header("Location: /facturas?id_cliente=".$_GET["id_cliente"]);
-            else header("Location: /facturas");
+            if(isset($_GET["id_cliente"])) return header("Location: /facturas?id_cliente=".$_GET["id_cliente"]);
+            else return header("Location: /facturas");
         }
         else if(isset($_POST["eliminar_item"])){
             $this->db->deleteBy( 'id_iteam',$_POST["eliminar_item"]);
-            if(isset($_GET["id_cliente"])) header("Location: /añadir_item?id_factura=".$_GET["id_factura"]."&id_cliente=".$_GET["id_cliente"]);
-            else header("Location: /añadir_item?id_factura=".$_GET["id_factura"]);
+            if(isset($_GET["id_cliente"])) return header("Location: /añadir_item?id_factura=".$_GET["id_factura"]."&id_cliente=".$_GET["id_cliente"]);
+            else return header("Location: /añadir_item?id_factura=".$_GET["id_factura"]);
         }
         else if(isset($_POST["comprobar_cliente"])){
-            if(isset($_POST["cliente"]) and $_POST["cliente"]!=""){
-                if($this->db_clientes->getby("id_cliente",$_POST["cliente"])) header("Location: /crear_facturas?id_factura=".$_GET["id_factura"]."&id_cliente=".$_POST["cliente"]);
+            $value=intval($_POST["cliente"]);
+            $max = intval($this->db_clientes->getMaxIdCliente());
+            if (is_int($value) && $value<$max){
+                    if($this->db_clientes->getby("id_cliente",$_POST["cliente"])) return header("Location: /crear_facturas?id_factura=".$_GET["id_factura"]."&id_cliente=".$_POST["cliente"]);
             }
-            else header("Location: /crear_facturas?id_factura=".$_GET["id_factura"]);
+            else return header("Location: /crear_facturas?id_factura=".$_GET["id_factura"]);
         }
         else if(isset($_POST["volver"])){
             if($this->db_items->getBy('id_factura',$_GET["id_factura"])==NULL) $this->db->deleteBy('id_factura',$_GET["id_factura"]);
             else $this->db->updateimporte($_GET["id_factura"], $this->db_items->importe_neto_total($_GET["id_factura"]));
-            if(isset($_GET["id_cliente"])) header("Location: /facturas?id_cliente=".$_GET["id_cliente"]);
-            else  header("Location: /facturas");
+            if(isset($_GET["id_cliente"])) return header("Location: /facturas?id_cliente=".$_GET["id_cliente"]);
+            else return header("Location: /facturas");
         } 
         exit;
         
     }
     public function editar_factura(){
         if($this->session->get('user')!='admin' and $this->session->get('user')!='true'){
-            header("Location: /login");
-            exit;
+            return header("Location: /login");
         }else{
             $datos=$this->db->getByRow("id_factura",$_GET["id_factura"]);
             $value['reference']=$datos->reference;
             $value['n_factura'] =$datos->numero_factura;
             $value['id_cliente'] = $datos->id_cliente;
-            $page="Editar Factura para Cliente";
+            $page="Edit Invoice to Client";
             $data['title'] = ucfirst($page);
             $value['detalle']=$this->db_items->getBy('id_factura',$_GET["id_factura"]);
 
@@ -131,7 +131,6 @@ class DetallesController extends BaseController{
             $value['añadir']="";
             $value['autocomplete'] ="";
             $_SESSION['editar'] = 'true';
-            // var_dump(json_encode($value['detalle']));
             return view('templates/header', $data)
             . view('pages/make_invoice', $value)
             . view('templates/footer');
@@ -139,15 +138,14 @@ class DetallesController extends BaseController{
     }
     public function añadir_item(){
         if($this->session->get('user')!='admin' and $this->session->get('user')!='true'){
-            header("Location: /login");
-            exit;
+            return header("Location: /login");
         }else{
             $datos=$this->db->getByRow("id_factura", $_GET["id_factura"]);
             if(isset($_GET["id_cliente"])){
                 $idCliente = $_GET["id_cliente"];
                 $value['id_cliente'] = $idCliente;
-                if($_SESSION['editar']=='false') $page="Crear Factura para Cliente";
-                else $page="Editar Factura para Cliente";
+                if($_SESSION['editar']=='false') $page="Create Invoice to Client";
+                else $page="Edit Invoice to Client";
                 $data['title'] = ucfirst($page); 
                 $value['n_factura']=intval($this->db->getMaxNfactureBy('numero_factura','id_cliente',$idCliente))+1;
             }
@@ -165,14 +163,13 @@ class DetallesController extends BaseController{
     }
     public function editar_item(){
         if($this->session->get('user')!='admin' and $this->session->get('user')!='true'){
-            header("Location: /login");
-            exit;
+            return header("Location: /login");
         }else{
             $idFactura=$_GET["id_factura"];
             $datos=$this->db->getByRow("id_factura", $idFactura);
             $value['id_cliente'] = $datos->id_cliente;
-            if($_SESSION['editar']=='false')$page="Crear Factura para Cliente";
-            else $page="Editar Factura para Cliente";
+            if($_SESSION['editar']=='false')$page="Create Invoice to Client";
+            else $page="Edit Invoice to Client";
             $data['title'] = ucfirst($page); 
             $value['n_factura']=$datos->numero_factura;
             $value['id_cliente'] = $datos->id_cliente;
@@ -193,8 +190,7 @@ class DetallesController extends BaseController{
         if($this->db_items->getBy('id_factura',$_GET["id_factura"])==NULL) $this->db->deleteBy('id_factura',$_GET["id_factura"]);
         else $this->db->updateimporte($_GET["id_factura"], $this->db_items->importe_neto_total($_GET["id_factura"]));
         $this->session->destroy();
-        header("Location: /login");
-        exit;
+        return header("Location: /login");
     }
 }
 ?>

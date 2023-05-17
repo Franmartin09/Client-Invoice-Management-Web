@@ -15,7 +15,7 @@ function checkForm(event) {
         <div class="col-md-4 offset-md-4">
             <div class="input-group">
                 <span class="input-group-addon border-bottom text-center" style="width:40px;"><i class="bi bi-person-fill"></i></span>
-                <input type="text" class="form-control border-0 border-bottom" name="username" required="required" placeholder="Username"> 
+                <input type="text" class="form-control border-0 border-bottom" name="username" required="required" placeholder="Username" maxlength="50"> 
             </div>
         </div>
     </div>
@@ -24,7 +24,7 @@ function checkForm(event) {
         <div class="col-md-4 offset-md-4">
             <div class="input-group">
                 <span class="input-group-addon border-bottom text-center" style="width:40px;"><i class="bi bi-key-fill"></i></span>
-                <input type="password" class="form-control border-0 border-bottom" name="password" required="required" placeholder="Password">
+                <input type="password" class="form-control border-0 border-bottom" name="password" required="required" placeholder="Password" maxlength="100">
             </div>
         </div>
     </div>
@@ -41,7 +41,6 @@ function checkForm(event) {
 <script>
     <?if($error==true){?>
     window.alert("Username password combination is wrong!");
-    // alert("Hello world!");
 <?}?>
 </script>
 

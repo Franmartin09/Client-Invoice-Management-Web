@@ -7,7 +7,6 @@ CREATE TABLE usuarios (
     email VARCHAR(100) NOT NULL,
     pass VARCHAR(100) NOT NULL
 );
-CREATE INDEX idx_id_user ON usuarios (id_user);
 
 
 -- CLIENTES PARA LISTAR --
@@ -24,7 +23,6 @@ CREATE TABLE clientes (
     fecha_baja TIMESTAMP,
     estado CHAR(1) NOT NULL
 );
-CREATE INDEX idx_idcliente ON clientes (id_cliente);
 
 
 -- FACTURAS DE CADA CLIENTE PARA LISTAR --
@@ -40,7 +38,7 @@ CREATE INDEX idx_idcliente ON clientes (id_cliente);
      numero_factura INT NOT NULL,
      id_cliente SERIAL REFERENCES clientes(id_cliente) ON DELETE CASCADE
  );
-CREATE INDEX idx_idfactura ON facturas (id_factura);
+
 
 -- ITEMS DE CADA FACTURA PARA LISTAR --
 -- CREATE TABLE Items

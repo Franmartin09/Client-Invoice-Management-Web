@@ -24,18 +24,16 @@ class Database extends Config
     /**
      * The default database connection.
      */
-
     public array $default = [
-        'DSN' => 'pgsql:host=pro1-bd-pg;port=5432;dbname=ci4_postgre;user=root;password=root',
-        #'DSN' => '',
-        'hostname' => 'pro1-bd-pg',
+        'DSN'      => '',
+        'hostname' => 'localhost',
         'username' => 'root',
         'password' => 'root',
-        'database' => 'ci4_postgre',
+        'database' => '',
         'DBDriver' => 'Postgre',
         'DBPrefix' => '',
-        'pConnect' => true,
-        'DBDebug'  => (ENVIRONMENT !== 'production'),
+        'pConnect' => false,
+        'DBDebug'  => true,
         'charset'  => 'utf8',
         'DBCollat' => 'utf8_general_ci',
         'swapPre'  => '',
