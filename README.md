@@ -31,7 +31,7 @@ This PHP web application allows you to manage clients and invoices efficiently. 
 1. **Clone the repository:**
     ```sh
     git clone https://github.com/Franmartin09/Client-Invoice-Management-Web
-    cd your-repository
+    cd Client-Invoice-Management-Web
     ```
 
 2. **Set up environment variables:**
